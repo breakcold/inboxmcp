@@ -13,9 +13,9 @@ Started 2026-10-13. Submitted or pending review does not mean approved or listed
 | [Claude Connectors Directory](https://claude.ai/directory) | Previously completed | Reported done by publisher; outside this submission pass. |
 | [ChatGPT Plugin Directory](https://platform.openai.com) | Previously completed | Reported done by publisher; outside this submission pass. |
 | [PulseMCP](https://www.pulsemcp.com) | Intake paused | 2026-10-13: [submission page](https://www.pulsemcp.com/submit) says all submissions/changes are paused and official-registry entries will be imported when intake resumes. Official publication completed. |
-| [MCP Market](https://mcpmarket.com) | Not started |  |
-| [MCP Servers](https://mcpservers.org) | Not started |  |
-| [LobeHub MCP](https://lobehub.com/mcp) | Not started |  |
+| [MCP Market](https://mcpmarket.com) | Submitted for review | 2026-10-13: public repository submitted through free queue; success screen confirmed estimated 4–6 week wait. |
+| [MCP Servers](https://mcpservers.org) | Submitted for review | 2026-10-13: success page confirms InboxMCP submitted under Communication, remote/OAuth, official registry name included. Free review within 2 weeks. |
+| [LobeHub MCP](https://lobehub.com/mcp) | Manifest ready; awaiting login | `lhm.plugin.json` includes the hosted endpoint and all 50 tools. Publisher CLI requires LobeHub login and GitHub ownership authorization. |
 | [AIBase MCP](https://www.aibase.com) | Not started |  |
 | [MCP Directory](https://mcp.directory/submit) | Not started |  |
 | [Cline Marketplace](https://github.com/cline) | Not started |  |
