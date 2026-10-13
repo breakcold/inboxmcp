@@ -26,5 +26,5 @@ jobs:
         run: ./mcp-publisher publish server.json
       - name: Verify published version
         run: |
-          curl --fail --location --retry 3 'https://registry.modelcontextprotocol.io/v0.1/servers/io.github.breakcold%2Finboxmcp/versions/1.0.0' --output published.json
+          curl --fail --location --max-time 30 --retry 3 --header 'Accept: application/json' 'https://registry.modelcontextprotocol.io/v0.1/servers/io.github.breakcold%2Finboxmcp/versions/1.0.0' --output published.json
           jq --exit-status '.server.name == "io.github.breakcold/inboxmcp" and .server.version == "1.0.0" and .server.remotes[0].url == "https://inbox-mcp.com/mcp"' published.json

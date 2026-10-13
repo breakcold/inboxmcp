@@ -4,8 +4,8 @@ Started 2026-10-13. Submitted or pending review does not mean approved or listed
 
 | Directory | Status | Evidence / next step |
 | --- | --- | --- |
-| [Official MCP Registry](https://registry.modelcontextprotocol.io) | In progress | Publish server.json through mcp-publisher and verify public API. |
-| [Glama](https://glama.ai/mcp/servers) | Not started |  |
+| [Official MCP Registry](https://registry.modelcontextprotocol.io) | Published | 2026-10-13: `io.github.breakcold/inboxmcp` version `1.0.0`; public API confirms active/latest. [Record](https://registry.modelcontextprotocol.io/v0.1/servers/io.github.breakcold%2Finboxmcp/versions/1.0.0), [publish run](https://github.com/breakcold/inboxmcp/actions/runs/38354455771). |
+| [Glama](https://glama.ai/mcp/servers) | In progress | Inspect remote-server submission and ownership requirements; submit the public repository and OAuth endpoint. |
 | [Smithery](https://smithery.ai) | Not started |  |
 | [MCP.so](https://mcp.so) | Not started |  |
 | [GitHub MCP Registry](https://github.com/mcp) | Not started |  |
