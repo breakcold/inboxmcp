@@ -1,0 +1,27 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.breakcold/inboxmcp",
+  "title": "InboxMCP",
+  "description": "LinkedIn, WhatsApp, Telegram and Instagram inboxes, profiles and outreach for your AI assistant.",
+  "version": "1.0.0",
+  "repository": {
+    "url": "https://github.com/breakcold/inboxmcp",
+    "source": "github"
+  },
+  "websiteUrl": "https://inbox-mcp.com",
+  "icons": [
+    {
+      "src": "https://raw.githubusercontent.com/breakcold/inboxmcp/main/assets/logo.png",
+      "mimeType": "image/png",
+      "sizes": [
+        "512x512"
+      ]
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://inbox-mcp.com/mcp"
+    }
+  ]
+}

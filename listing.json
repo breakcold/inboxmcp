@@ -1,0 +1,41 @@
+{
+  "name": "InboxMCP",
+  "publisher": "Breakcold / Logike SAS",
+  "shortDescription": "Manage LinkedIn, WhatsApp, Telegram and Instagram inboxes, profiles and outreach from your AI assistant.",
+  "description": "InboxMCP connects LinkedIn, WhatsApp, Telegram and Instagram to AI assistants through a hosted MCP server. Read conversations, draft replies, research LinkedIn profiles, and perform user-approved messaging, invitations, posts and paced outreach. Supports multiple accounts, OAuth permissions and per-account rate limits.",
+  "website": "https://inbox-mcp.com",
+  "repository": "https://github.com/breakcold/inboxmcp",
+  "documentation": "https://inbox-mcp.com/docs",
+  "support": "https://inbox-mcp.com/docs",
+  "supportEmail": "support@inbox-mcp.com",
+  "privacyPolicy": "https://inbox-mcp.com/privacy",
+  "termsOfService": "https://inbox-mcp.com/terms",
+  "pricing": "https://inbox-mcp.com/pricing",
+  "pricingModel": "Free trial, then paid subscription",
+  "logo": "https://raw.githubusercontent.com/breakcold/inboxmcp/main/assets/logo.png",
+  "endpoint": "https://inbox-mcp.com/mcp",
+  "transport": "streamable-http",
+  "authentication": "OAuth 2.1 with PKCE",
+  "hosting": "remote",
+  "backendSourceAvailable": false,
+  "repositoryLicense": "MIT",
+  "categories": [
+    "Communication",
+    "Productivity",
+    "Social Media",
+    "Sales"
+  ],
+  "keywords": [
+    "mcp",
+    "remote-mcp",
+    "linkedin",
+    "whatsapp",
+    "telegram",
+    "instagram",
+    "inbox",
+    "messaging",
+    "outreach",
+    "profile-research"
+  ],
+  "registryName": "io.github.breakcold/inboxmcp"
+}

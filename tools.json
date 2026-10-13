@@ -1,0 +1,2082 @@
+{
+  "source": "https://inbox-mcp.com/api/docs",
+  "retrievedAt": "2026-10-13",
+  "tools": [
+    {
+      "name": "linkedin_status",
+      "title": "LinkedIn account status and limits",
+      "description": "Call before planning several LinkedIn actions. Says whether the account can act now (blocked_reason), how many actions are left today (profile_views \u2192 linkedin_get_profile, searches \u2192 linkedin_search_people, messages \u2192 linkedin_send_message, new_conversations \u2192 linkedin_start_chat, invitations \u2192 linkedin_send_invitation, posts \u2192 linkedin_create_post; invitations also have a weekly limit), and ready_in_seconds for each: the wait before that action can run. Reading the inbox has a high limit and is not listed. No account or a disconnected one: use linkedin_connect_account. Plan or seats: use inboxmcp_billing. For WhatsApp, Telegram and Instagram accounts, use inbox_status.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "account_id from inbox_list_accounts; default: the first LinkedIn account",
+            "type": "string"
+          }
+        }
+      },
+      "annotations": {
+        "title": "LinkedIn account status and limits",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "group": "Account & plan",
+      "permission": null,
+      "limit": null,
+      "readOnly": true
+    },
+    {
+      "name": "inbox_status",
+      "title": "Account status and limits",
+      "description": "Status and limits of one connected account, any provider (LinkedIn, WhatsApp, Telegram, Instagram). Call before planning several actions. Says whether the account can act now (blocked_reason), how many actions are left today (messages \u2192 *_send_message, new_conversations \u2192 *_start_chat, profile_views \u2192 *_get_profile, posts \u2192 linkedin_create_post / instagram_create_post; on LinkedIn also searches and invitations), and ready_in_seconds for each. Reading has a high limit and is not listed. No account or a disconnected one: use connect_account. Plan or seats: use inboxmcp_billing.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "account_id from inbox_list_accounts. Needed only when several accounts are connected.",
+            "type": "string"
+          }
+        }
+      },
+      "annotations": {
+        "title": "Account status and limits",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "group": "Account & plan",
+      "permission": null,
+      "limit": null,
+      "readOnly": true
+    },
+    {
+      "name": "connect_account",
+      "title": "Connect an account",
+      "description": "Get a link for the user to connect a LinkedIn, WhatsApp, Telegram or Instagram account, or to reconnect one that was logged out. Before giving the link, tell the user what the result says about the free trial or price. They log in on our connect page in their browser (LinkedIn and Instagram: their login; WhatsApp and Telegram: scan a QR code). Never ask for passwords or codes in the chat. The link works for 30 minutes. Afterwards, call inbox_list_accounts to confirm.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "provider": {
+            "type": "string",
+            "enum": [
+              "linkedin",
+              "whatsapp",
+              "telegram",
+              "instagram"
+            ],
+            "description": "Which network to connect"
+          },
+          "mode": {
+            "default": "auto",
+            "description": "auto: reconnect the current account if it needs it, otherwise add one if none is connected. new: add another account. reconnect: log the current account back in.",
+            "type": "string",
+            "enum": [
+              "auto",
+              "new",
+              "reconnect"
+            ]
+          },
+          "account": {
+            "description": "account_id from inbox_list_accounts: the one to reconnect, when several of this network are connected",
+            "type": "string"
+          }
+        },
+        "required": [
+          "provider"
+        ]
+      },
+      "annotations": {
+        "title": "Connect an account",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "group": "Account & plan",
+      "permission": null,
+      "limit": null,
+      "readOnly": true
+    },
+    {
+      "name": "linkedin_connect_account",
+      "title": "Connect a LinkedIn account",
+      "description": "Get a link for the user to connect a LinkedIn account, or to reconnect one LinkedIn logged out. Before giving the link, tell the user what the result says about the free trial or price. They log in to LinkedIn in their browser on our connect page (never ask for their LinkedIn password or codes in the chat). The link works for 30 minutes. Afterwards, call linkedin_status to confirm.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "mode": {
+            "default": "auto",
+            "description": "auto: reconnect the current account if it needs it, otherwise add one if none is connected. new: add another account. reconnect: log the current account back in.",
+            "type": "string",
+            "enum": [
+              "auto",
+              "new",
+              "reconnect"
+            ]
+          }
+        }
+      },
+      "annotations": {
+        "title": "Connect a LinkedIn account",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "group": "Account & plan",
+      "permission": null,
+      "limit": null,
+      "readOnly": true
+    },
+    {
+      "name": "inboxmcp_billing",
+      "title": "Plan and billing",
+      "description": "The user's inbox MCP plan: free trial (3 days, starts when the first account is connected) or subscription ($10/month per connected account, any provider), with a link to our billing page to subscribe, update their card, get invoices, or cancel (payment happens on Stripe, in their browser). The link works for 30 minutes. Use it when the tools say the trial or subscription ended.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {}
+      },
+      "annotations": {
+        "title": "Plan and billing",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "group": "Account & plan",
+      "permission": null,
+      "limit": null,
+      "readOnly": true
+    },
+    {
+      "name": "inbox_list_accounts",
+      "title": "List connected accounts",
+      "description": "The LinkedIn, WhatsApp, Telegram and Instagram accounts this connection can use, with their account_id, provider, name and status. Pass account_id as `account` to the inbox_* and provider tools (linkedin_*, whatsapp_*, telegram_*, instagram_*) when more than one is connected.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {}
+      },
+      "annotations": {
+        "title": "List connected accounts",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "group": "Inbox",
+      "permission": null,
+      "limit": null,
+      "readOnly": true
+    },
+    {
+      "name": "inbox_list_chats",
+      "title": "List conversations",
+      "description": "Conversations across every connected inbox (LinkedIn, WhatsApp, Telegram, Instagram), merged and sorted most recent first; account or provider narrows it. Use unread=true to triage. Each item has chat_id, its account_id and provider (pass account_id as account to inbox_get_messages / inbox_send_message when several accounts are connected), and person_id for 1-to-1 chats. Accounts that can't be read right now are listed in skipped, with what to do.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "Only this account (account_id from inbox_list_accounts); default: every connected account, merged",
+            "type": "string"
+          },
+          "provider": {
+            "description": "Only this provider's accounts",
+            "type": "string",
+            "enum": [
+              "linkedin",
+              "whatsapp",
+              "telegram",
+              "instagram"
+            ]
+          },
+          "unread": {
+            "description": "Only conversations with unread messages",
+            "type": "boolean"
+          },
+          "limit": {
+            "default": 20,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "cursor": {
+            "description": "next_cursor from a previous call",
+            "type": "string"
+          },
+          "fresh": {
+            "default": false,
+            "description": "Bypass the 1h cache (costs a provider call)",
+            "type": "boolean"
+          }
+        }
+      },
+      "annotations": {
+        "title": "List conversations",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "group": "Inbox",
+      "permission": "linkedin:messages",
+      "limit": "read",
+      "readOnly": true
+    },
+    {
+      "name": "inbox_get_messages",
+      "title": "Read a conversation",
+      "description": "Messages in one conversation, most recent first. 'from' is 'me' (the account owner) or 'them'.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "account_id from inbox_list_accounts (a listed chat's account_id). Needed only when several accounts are connected.",
+            "type": "string"
+          },
+          "chat_id": {
+            "type": "string"
+          },
+          "limit": {
+            "default": 30,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "cursor": {
+            "type": "string"
+          },
+          "fresh": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "chat_id"
+        ]
+      },
+      "annotations": {
+        "title": "Read a conversation",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "group": "Inbox",
+      "permission": "linkedin:messages",
+      "limit": "read",
+      "readOnly": true
+    },
+    {
+      "name": "inbox_send_message",
+      "title": "Send a message",
+      "description": "Reply in an existing conversation, on any connected provider. Plain text. Show the user the exact text before calling this.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "account_id from inbox_list_accounts (a listed chat's account_id). Needed only when several accounts are connected.",
+            "type": "string"
+          },
+          "chat_id": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 8000
+          }
+        },
+        "required": [
+          "chat_id",
+          "text"
+        ]
+      },
+      "annotations": {
+        "title": "Send a message",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "group": "Inbox",
+      "permission": "linkedin:send",
+      "limit": "message",
+      "readOnly": false
+    },
+    {
+      "name": "inbox_start_chat",
+      "title": "Start a new conversation",
+      "description": "Message someone you have no conversation with yet. `to`: on LinkedIn the person_id (1st-degree connections; for InMail use linkedin_start_chat), on WhatsApp a phone number with country code, on Telegram the user id, on Instagram the user id. New conversations have a low daily limit, especially on WhatsApp, where cold messages get new accounts banned. Show the user the exact text before calling this.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "account_id from inbox_list_accounts (a listed chat's account_id). Needed only when several accounts are connected.",
+            "type": "string"
+          },
+          "to": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Recipient: person_id, phone number (WhatsApp) or user id"
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 8000
+          }
+        },
+        "required": [
+          "to",
+          "text"
+        ]
+      },
+      "annotations": {
+        "title": "Start a new conversation",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "group": "Inbox",
+      "permission": "linkedin:send",
+      "limit": "start_chat",
+      "readOnly": false
+    },
+    {
+      "name": "inbox_mark_read",
+      "title": "Mark conversation as read",
+      "description": "Marks a conversation read (or unread), on any connected provider.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "account_id from inbox_list_accounts (a listed chat's account_id). Needed only when several accounts are connected.",
+            "type": "string"
+          },
+          "chat_id": {
+            "type": "string"
+          },
+          "read": {
+            "default": true,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "chat_id"
+        ]
+      },
+      "annotations": {
+        "title": "Mark conversation as read",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "group": "Inbox",
+      "permission": "linkedin:send",
+      "limit": "manage",
+      "readOnly": false
+    },
+    {
+      "name": "linkedin_list_chats",
+      "title": "List LinkedIn conversations",
+      "description": "Conversations in the LinkedIn inbox, most recent first. Use unread=true to triage. Returns chat_id values for linkedin_get_messages / linkedin_send_message and person_id for 1-to-1 chats. With several LinkedIn accounts, lists them all merged (each item has its account_id: pass it as account to the other linkedin_* tools); account narrows to one.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "Only this account (account_id from inbox_list_accounts); default: every connected LinkedIn account, merged",
+            "type": "string"
+          },
+          "unread": {
+            "description": "Only conversations with unread messages",
+            "type": "boolean"
+          },
+          "limit": {
+            "default": 20,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "cursor": {
+            "description": "next_cursor from a previous call",
+            "type": "string"
+          },
+          "fresh": {
+            "default": false,
+            "description": "Bypass the 1h cache (costs a LinkedIn call)",
+            "type": "boolean"
+          }
+        }
+      },
+      "annotations": {
+        "title": "List LinkedIn conversations",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "group": "LinkedIn",
+      "permission": "linkedin:messages",
+      "limit": "read",
+      "readOnly": true
+    },
+    {
+      "name": "linkedin_get_messages",
+      "title": "Read a LinkedIn conversation",
+      "description": "Messages in one conversation, most recent first. 'from' is 'me' (the account owner) or 'them'.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "account_id of a LinkedIn account from inbox_list_accounts (a listed chat's account_id). Needed only when several LinkedIn accounts are connected.",
+            "type": "string"
+          },
+          "chat_id": {
+            "type": "string"
+          },
+          "limit": {
+            "default": 30,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "cursor": {
+            "type": "string"
+          },
+          "fresh": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "chat_id"
+        ]
+      },
+      "annotations": {
+        "title": "Read a LinkedIn conversation",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "group": "LinkedIn",
+      "permission": "linkedin:messages",
+      "limit": "read",
+      "readOnly": true
+    },
+    {
+      "name": "linkedin_send_message",
+      "title": "Send a LinkedIn message",
+      "description": "Reply in an existing conversation. Plain text. Show the user the exact text before calling this.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "account_id of a LinkedIn account from inbox_list_accounts (a listed chat's account_id). Needed only when several LinkedIn accounts are connected.",
+            "type": "string"
+          },
+          "chat_id": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 8000
+          }
+        },
+        "required": [
+          "chat_id",
+          "text"
+        ]
+      },
+      "annotations": {
+        "title": "Send a LinkedIn message",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "group": "LinkedIn",
+      "permission": "linkedin:send",
+      "limit": "message",
+      "readOnly": false
+    },
+    {
+      "name": "linkedin_start_chat",
+      "title": "Start a new LinkedIn conversation",
+      "description": "Message someone you are connected with (1st degree). For others, set inmail=true (needs a LinkedIn premium plan with InMail credits). Get the person_id from linkedin_search_people or linkedin_get_profile.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "account_id of a LinkedIn account from inbox_list_accounts (a listed chat's account_id). Needed only when several LinkedIn accounts are connected.",
+            "type": "string"
+          },
+          "person_id": {
+            "type": "string",
+            "description": "LinkedIn user id of the recipient"
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 8000
+          },
+          "inmail": {
+            "default": false,
+            "type": "boolean"
+          },
+          "subject": {
+            "description": "InMail subject",
+            "type": "string",
+            "maxLength": 200
+          }
+        },
+        "required": [
+          "person_id",
+          "text"
+        ]
+      },
+      "annotations": {
+        "title": "Start a new LinkedIn conversation",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "group": "LinkedIn",
+      "permission": "linkedin:send",
+      "limit": "start_chat",
+      "readOnly": false
+    },
+    {
+      "name": "linkedin_mark_read",
+      "title": "Mark LinkedIn conversation as read",
+      "description": "Marks a conversation read (or unread).",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "account_id of a LinkedIn account from inbox_list_accounts (a listed chat's account_id). Needed only when several LinkedIn accounts are connected.",
+            "type": "string"
+          },
+          "chat_id": {
+            "type": "string"
+          },
+          "read": {
+            "default": true,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "chat_id"
+        ]
+      },
+      "annotations": {
+        "title": "Mark LinkedIn conversation as read",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "group": "LinkedIn",
+      "permission": "linkedin:send",
+      "limit": "manage",
+      "readOnly": false
+    },
+    {
+      "name": "linkedin_search_people",
+      "title": "Search people on LinkedIn",
+      "description": "Search LinkedIn members by keywords, or paste a LinkedIn people-search URL copied from the browser (keeps all its filters). Each page costs one LinkedIn search. Returns person_id values for other tools.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "keywords": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "url": {
+            "description": "A LinkedIn people-search URL",
+            "type": "string",
+            "format": "uri"
+          },
+          "network_distance": {
+            "description": "1 = connections, 2 = 2nd degree, 3 = 3rd+",
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "const": 1
+                },
+                {
+                  "type": "number",
+                  "const": 2
+                },
+                {
+                  "type": "number",
+                  "const": 3
+                }
+              ]
+            }
+          },
+          "limit": {
+            "default": 10,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 25
+          },
+          "cursor": {
+            "type": "string"
+          },
+          "account": {
+            "description": "account_id of a LinkedIn account from inbox_list_accounts (a listed chat's account_id). Needed only when several LinkedIn accounts are connected.",
+            "type": "string"
+          }
+        }
+      },
+      "annotations": {
+        "title": "Search people on LinkedIn",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "group": "LinkedIn",
+      "permission": "linkedin:search",
+      "limit": "search",
+      "readOnly": true
+    },
+    {
+      "name": "linkedin_get_profile",
+      "title": "Get a LinkedIn profile",
+      "description": "Full profile by person_id or public identifier (the part after linkedin.com/in/). Counts as a profile view on LinkedIn.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "person": {
+            "type": "string",
+            "minLength": 1,
+            "description": "person_id or public identifier"
+          },
+          "fresh": {
+            "default": false,
+            "type": "boolean"
+          },
+          "account": {
+            "description": "account_id of a LinkedIn account from inbox_list_accounts (a listed chat's account_id). Needed only when several LinkedIn accounts are connected.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "person"
+        ]
+      },
+      "annotations": {
+        "title": "Get a LinkedIn profile",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "group": "LinkedIn",
+      "permission": "linkedin:profiles",
+      "limit": "profile",
+      "readOnly": true
+    },
+    {
+      "name": "linkedin_send_invitation",
+      "title": "Send a connection request",
+      "description": "Invite someone to connect, optionally with a note (max 300 characters, 200 on free LinkedIn accounts, which can add a note to about 15 invitations a week). Limited per day and per week, and LinkedIn actions are spaced about a minute apart; check linkedin_status first.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "person_id": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "account": {
+            "description": "account_id of a LinkedIn account from inbox_list_accounts (a listed chat's account_id). Needed only when several LinkedIn accounts are connected.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "person_id"
+        ]
+      },
+      "annotations": {
+        "title": "Send a connection request",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "group": "LinkedIn",
+      "permission": "linkedin:send",
+      "limit": "invite",
+      "readOnly": false
+    },
+    {
+      "name": "linkedin_list_invitations",
+      "title": "List connection requests",
+      "description": "Pending invitations you sent or received.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "direction": {
+            "default": "received",
+            "type": "string",
+            "enum": [
+              "sent",
+              "received"
+            ]
+          },
+          "limit": {
+            "default": 20,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "cursor": {
+            "type": "string"
+          },
+          "account": {
+            "description": "account_id of a LinkedIn account from inbox_list_accounts (a listed chat's account_id). Needed only when several LinkedIn accounts are connected.",
+            "type": "string"
+          }
+        }
+      },
+      "annotations": {
+        "title": "List connection requests",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "group": "LinkedIn",
+      "permission": "linkedin:profiles",
+      "limit": "read",
+      "readOnly": true
+    },
+    {
+      "name": "linkedin_create_post",
+      "title": "Publish a LinkedIn post",
+      "description": "Publish a text post on the account's feed. A link can be appended; LinkedIn builds the preview from the first URL in the text. Public and irreversible from here: confirm the final text with the user first.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 3000
+          },
+          "link": {
+            "type": "string",
+            "format": "uri"
+          },
+          "visibility": {
+            "default": "anyone",
+            "type": "string",
+            "enum": [
+              "anyone",
+              "relations_only"
+            ]
+          },
+          "account": {
+            "description": "account_id of a LinkedIn account from inbox_list_accounts (a listed chat's account_id). Needed only when several LinkedIn accounts are connected.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "text"
+        ]
+      },
+      "annotations": {
+        "title": "Publish a LinkedIn post",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "group": "LinkedIn",
+      "permission": "linkedin:send",
+      "limit": "post",
+      "readOnly": false
+    },
+    {
+      "name": "linkedin_schedule_outreach",
+      "title": "Schedule paced LinkedIn messages",
+      "description": "Queue up to 50 messages or invitations. They are sent one by one with random gaps of a minute or more, respecting daily limits. An invitation's text is its note (max 300 characters, 200 on free LinkedIn accounts). Returns a job_id; poll with linkedin_get_job. Confirm the list with the user first.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "items": {
+            "minItems": 1,
+            "maxItems": 50,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "message",
+                    "invitation"
+                  ]
+                },
+                "chat_id": {
+                  "description": "for kind=message: existing conversation",
+                  "type": "string"
+                },
+                "person_id": {
+                  "description": "for kind=invitation, or kind=message to start a new conversation",
+                  "type": "string"
+                },
+                "text": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 3000
+                }
+              },
+              "required": [
+                "kind",
+                "text"
+              ]
+            }
+          },
+          "min_gap_seconds": {
+            "default": 120,
+            "type": "integer",
+            "minimum": 60,
+            "maximum": 3600
+          },
+          "account": {
+            "description": "account_id of a LinkedIn account from inbox_list_accounts (a listed chat's account_id). Needed only when several LinkedIn accounts are connected.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "items"
+        ]
+      },
+      "annotations": {
+        "title": "Schedule paced LinkedIn messages",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "group": "LinkedIn",
+      "permission": "linkedin:send",
+      "limit": "per item",
+      "readOnly": false
+    },
+    {
+      "name": "linkedin_get_job",
+      "title": "Check an outreach job",
+      "description": "Progress and per-item results of a job from linkedin_schedule_outreach.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "job_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id"
+        ]
+      },
+      "annotations": {
+        "title": "Check an outreach job",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "group": "LinkedIn",
+      "permission": null,
+      "limit": null,
+      "readOnly": true
+    },
+    {
+      "name": "whatsapp_list_chats",
+      "title": "List WhatsApp chats",
+      "description": "WhatsApp chats (1-to-1 and groups), most recent first. Use unread=true to triage. Returns chat_id values for whatsapp_get_messages / whatsapp_send_message, and person_id (the contact's WhatsApp id, <digits>@s.whatsapp.net) for 1-to-1 chats; for a group's members use whatsapp_list_group_members. With several WhatsApp accounts, lists them all merged (each item has its account_id: pass it as account to the other whatsapp_* tools); account narrows to one.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "Only this account (account_id from inbox_list_accounts); default: every connected WhatsApp account, merged",
+            "type": "string"
+          },
+          "unread": {
+            "description": "Only conversations with unread messages",
+            "type": "boolean"
+          },
+          "limit": {
+            "default": 20,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "cursor": {
+            "description": "next_cursor from a previous call",
+            "type": "string"
+          },
+          "fresh": {
+            "default": false,
+            "description": "Bypass the 1h cache (costs a WhatsApp call)",
+            "type": "boolean"
+          }
+        }
+      },
+      "annotations": {
+        "title": "List WhatsApp chats",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "group": "WhatsApp",
+      "permission": "linkedin:messages",
+      "limit": "read",
+      "readOnly": true
+    },
+    {
+      "name": "whatsapp_get_messages",
+      "title": "Read a WhatsApp chat",
+      "description": "Messages in one WhatsApp chat, most recent first. 'from' is 'me' (the account owner) or 'them'. message_id values work with whatsapp_react.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "account_id of a WhatsApp account from inbox_list_accounts (a listed chat's account_id). Needed only when several WhatsApp accounts are connected.",
+            "type": "string"
+          },
+          "chat_id": {
+            "type": "string"
+          },
+          "limit": {
+            "default": 30,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "cursor": {
+            "type": "string"
+          },
+          "fresh": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "chat_id"
+        ]
+      },
+      "annotations": {
+        "title": "Read a WhatsApp chat",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "group": "WhatsApp",
+      "permission": "linkedin:messages",
+      "limit": "read",
+      "readOnly": true
+    },
+    {
+      "name": "whatsapp_send_message",
+      "title": "Send a WhatsApp message",
+      "description": "Reply in an existing WhatsApp chat (1-to-1 or group). Plain text. WhatsApp actions are spaced 10\u201320 s apart. Show the user the exact text before calling this.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "account_id of a WhatsApp account from inbox_list_accounts (a listed chat's account_id). Needed only when several WhatsApp accounts are connected.",
+            "type": "string"
+          },
+          "chat_id": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 8000
+          }
+        },
+        "required": [
+          "chat_id",
+          "text"
+        ]
+      },
+      "annotations": {
+        "title": "Send a WhatsApp message",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "group": "WhatsApp",
+      "permission": "linkedin:send",
+      "limit": "message",
+      "readOnly": false
+    },
+    {
+      "name": "whatsapp_start_chat",
+      "title": "Start a new WhatsApp chat",
+      "description": "Message a phone number you have no WhatsApp chat with yet. phone: international format with its country code, like +33 6 12 34 56 78. WhatsApp bans accounts that send cold messages (new accounts after 2\u20133), so only message people who expect it; at most 10 new chats a day. Show the user the exact text before calling this.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "account_id of a WhatsApp account from inbox_list_accounts (a listed chat's account_id). Needed only when several WhatsApp accounts are connected.",
+            "type": "string"
+          },
+          "phone": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Phone number with its country code, like +33 6 12 34 56 78"
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 8000
+          }
+        },
+        "required": [
+          "phone",
+          "text"
+        ]
+      },
+      "annotations": {
+        "title": "Start a new WhatsApp chat",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "group": "WhatsApp",
+      "permission": "linkedin:send",
+      "limit": "start_chat",
+      "readOnly": false
+    },
+    {
+      "name": "whatsapp_mark_read",
+      "title": "Mark WhatsApp chat as read",
+      "description": "Marks a WhatsApp chat read (or unread).",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "account_id of a WhatsApp account from inbox_list_accounts (a listed chat's account_id). Needed only when several WhatsApp accounts are connected.",
+            "type": "string"
+          },
+          "chat_id": {
+            "type": "string"
+          },
+          "read": {
+            "default": true,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "chat_id"
+        ]
+      },
+      "annotations": {
+        "title": "Mark WhatsApp chat as read",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "group": "WhatsApp",
+      "permission": "linkedin:send",
+      "limit": "manage",
+      "readOnly": false
+    },
+    {
+      "name": "whatsapp_react",
+      "title": "React to a WhatsApp message",
+      "description": "Add an emoji reaction to a message (message_id from whatsapp_get_messages). Any emoji works; a new reaction replaces yours.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "account_id of a WhatsApp account from inbox_list_accounts (a listed chat's account_id). Needed only when several WhatsApp accounts are connected.",
+            "type": "string"
+          },
+          "chat_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "message_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reaction": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 16,
+            "description": "One emoji, like \ud83d\udc4d"
+          }
+        },
+        "required": [
+          "chat_id",
+          "message_id",
+          "reaction"
+        ]
+      },
+      "annotations": {
+        "title": "React to a WhatsApp message",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "group": "WhatsApp",
+      "permission": "linkedin:send",
+      "limit": "manage",
+      "readOnly": false
+    },
+    {
+      "name": "whatsapp_get_profile",
+      "title": "Get a WhatsApp profile",
+      "description": "A WhatsApp user's profile: name, username, phone when WhatsApp shares it, bio, followers and picture. Counts as a profile view.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "account_id of a WhatsApp account from inbox_list_accounts (a listed chat's account_id). Needed only when several WhatsApp accounts are connected.",
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The contact's WhatsApp id (a chat's person_id, <digits>@s.whatsapp.net) or phone number with country code"
+          },
+          "fresh": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "user_id"
+        ]
+      },
+      "annotations": {
+        "title": "Get a WhatsApp profile",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "group": "WhatsApp",
+      "permission": "linkedin:profiles",
+      "limit": "profile",
+      "readOnly": true
+    },
+    {
+      "name": "whatsapp_list_group_members",
+      "title": "List WhatsApp group members",
+      "description": "Members of a WhatsApp group chat (chat_id from whatsapp_list_chats), with their user_id for whatsapp_get_profile and their phone number. Group chats only.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "account_id of a WhatsApp account from inbox_list_accounts (a listed chat's account_id). Needed only when several WhatsApp accounts are connected.",
+            "type": "string"
+          },
+          "chat_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "limit": {
+            "default": 50,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "cursor": {
+            "description": "next_cursor from a previous call",
+            "type": "string"
+          }
+        },
+        "required": [
+          "chat_id"
+        ]
+      },
+      "annotations": {
+        "title": "List WhatsApp group members",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "group": "WhatsApp",
+      "permission": "linkedin:messages",
+      "limit": "read",
+      "readOnly": true
+    },
+    {
+      "name": "telegram_list_chats",
+      "title": "List Telegram chats",
+      "description": "Telegram chats (private chats and groups), most recent first. Use unread=true to triage. Returns chat_id values for telegram_get_messages / telegram_send_message, and person_id (the contact's Telegram user id) for private chats; for a group's members use telegram_list_group_members. With several Telegram accounts, lists them all merged (each item has its account_id: pass it as account to the other telegram_* tools); account narrows to one.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "Only this account (account_id from inbox_list_accounts); default: every connected Telegram account, merged",
+            "type": "string"
+          },
+          "unread": {
+            "description": "Only conversations with unread messages",
+            "type": "boolean"
+          },
+          "limit": {
+            "default": 20,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "cursor": {
+            "description": "next_cursor from a previous call",
+            "type": "string"
+          },
+          "fresh": {
+            "default": false,
+            "description": "Bypass the 1h cache (costs a Telegram call)",
+            "type": "boolean"
+          }
+        }
+      },
+      "annotations": {
+        "title": "List Telegram chats",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "group": "Telegram",
+      "permission": "linkedin:messages",
+      "limit": "read",
+      "readOnly": true
+    },
+    {
+      "name": "telegram_get_messages",
+      "title": "Read a Telegram chat",
+      "description": "Messages in one Telegram chat, most recent first. 'from' is 'me' (the account owner) or 'them'. message_id values work with telegram_react.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "account_id of a Telegram account from inbox_list_accounts (a listed chat's account_id). Needed only when several Telegram accounts are connected.",
+            "type": "string"
+          },
+          "chat_id": {
+            "type": "string"
+          },
+          "limit": {
+            "default": 30,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "cursor": {
+            "type": "string"
+          },
+          "fresh": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "chat_id"
+        ]
+      },
+      "annotations": {
+        "title": "Read a Telegram chat",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "group": "Telegram",
+      "permission": "linkedin:messages",
+      "limit": "read",
+      "readOnly": true
+    },
+    {
+      "name": "telegram_send_message",
+      "title": "Send a Telegram message",
+      "description": "Reply in an existing Telegram chat (private or group). Plain text. Show the user the exact text before calling this.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "account_id of a Telegram account from inbox_list_accounts (a listed chat's account_id). Needed only when several Telegram accounts are connected.",
+            "type": "string"
+          },
+          "chat_id": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 8000
+          }
+        },
+        "required": [
+          "chat_id",
+          "text"
+        ]
+      },
+      "annotations": {
+        "title": "Send a Telegram message",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "group": "Telegram",
+      "permission": "linkedin:send",
+      "limit": "message",
+      "readOnly": false
+    },
+    {
+      "name": "telegram_start_chat",
+      "title": "Start a new Telegram chat",
+      "description": "Message a Telegram user you have no chat with yet, by numeric user id (a chat's person_id, or a member from telegram_list_group_members). Telegram restricts accounts that message many strangers, so only message people who expect it; at most 10 new chats a day. Show the user the exact text before calling this.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "account_id of a Telegram account from inbox_list_accounts (a listed chat's account_id). Needed only when several Telegram accounts are connected.",
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Telegram user id of the recipient"
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 8000
+          }
+        },
+        "required": [
+          "user_id",
+          "text"
+        ]
+      },
+      "annotations": {
+        "title": "Start a new Telegram chat",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "group": "Telegram",
+      "permission": "linkedin:send",
+      "limit": "start_chat",
+      "readOnly": false
+    },
+    {
+      "name": "telegram_mark_read",
+      "title": "Mark Telegram chat as read",
+      "description": "Marks a Telegram chat read (or unread).",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "account_id of a Telegram account from inbox_list_accounts (a listed chat's account_id). Needed only when several Telegram accounts are connected.",
+            "type": "string"
+          },
+          "chat_id": {
+            "type": "string"
+          },
+          "read": {
+            "default": true,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "chat_id"
+        ]
+      },
+      "annotations": {
+        "title": "Mark Telegram chat as read",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "group": "Telegram",
+      "permission": "linkedin:send",
+      "limit": "manage",
+      "readOnly": false
+    },
+    {
+      "name": "telegram_react",
+      "title": "React to a Telegram message",
+      "description": "Add an emoji reaction to a message (message_id from telegram_get_messages). Telegram accepts only its standard reaction emojis (\ud83d\udc4d \u2764\ufe0f \ud83d\udd25 \ud83c\udf89 \ud83d\ude01 \ud83d\udc4f \u2026); others fail.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "account_id of a Telegram account from inbox_list_accounts (a listed chat's account_id). Needed only when several Telegram accounts are connected.",
+            "type": "string"
+          },
+          "chat_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "message_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reaction": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 16,
+            "description": "One emoji, like \ud83d\udc4d"
+          }
+        },
+        "required": [
+          "chat_id",
+          "message_id",
+          "reaction"
+        ]
+      },
+      "annotations": {
+        "title": "React to a Telegram message",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "group": "Telegram",
+      "permission": "linkedin:send",
+      "limit": "manage",
+      "readOnly": false
+    },
+    {
+      "name": "telegram_get_profile",
+      "title": "Get a Telegram profile",
+      "description": "A Telegram user's profile: name, username, phone when Telegram shares it, bio, followers and picture. Counts as a profile view.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "account_id of a Telegram account from inbox_list_accounts (a listed chat's account_id). Needed only when several Telegram accounts are connected.",
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Telegram user id (a chat's person_id or a group member's user_id)"
+          },
+          "fresh": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "user_id"
+        ]
+      },
+      "annotations": {
+        "title": "Get a Telegram profile",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "group": "Telegram",
+      "permission": "linkedin:profiles",
+      "limit": "profile",
+      "readOnly": true
+    },
+    {
+      "name": "telegram_list_group_members",
+      "title": "List Telegram group members",
+      "description": "Members of a Telegram group chat (chat_id from telegram_list_chats), with their user_id for telegram_get_profile. Group chats only.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "account_id of a Telegram account from inbox_list_accounts (a listed chat's account_id). Needed only when several Telegram accounts are connected.",
+            "type": "string"
+          },
+          "chat_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "limit": {
+            "default": 50,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "cursor": {
+            "description": "next_cursor from a previous call",
+            "type": "string"
+          }
+        },
+        "required": [
+          "chat_id"
+        ]
+      },
+      "annotations": {
+        "title": "List Telegram group members",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "group": "Telegram",
+      "permission": "linkedin:messages",
+      "limit": "read",
+      "readOnly": true
+    },
+    {
+      "name": "instagram_list_chats",
+      "title": "List Instagram conversations",
+      "description": "Instagram direct messages, most recent first. Use unread=true to triage. Returns chat_id values for instagram_get_messages / instagram_send_message, and person_id (the contact's Instagram user id) for 1-to-1 chats. With several Instagram accounts, lists them all merged (each item has its account_id: pass it as account to the other instagram_* tools); account narrows to one.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "Only this account (account_id from inbox_list_accounts); default: every connected Instagram account, merged",
+            "type": "string"
+          },
+          "unread": {
+            "description": "Only conversations with unread messages",
+            "type": "boolean"
+          },
+          "limit": {
+            "default": 20,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "cursor": {
+            "description": "next_cursor from a previous call",
+            "type": "string"
+          },
+          "fresh": {
+            "default": false,
+            "description": "Bypass the 1h cache (costs a Instagram call)",
+            "type": "boolean"
+          }
+        }
+      },
+      "annotations": {
+        "title": "List Instagram conversations",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "group": "Instagram",
+      "permission": "linkedin:messages",
+      "limit": "read",
+      "readOnly": true
+    },
+    {
+      "name": "instagram_get_messages",
+      "title": "Read an Instagram conversation",
+      "description": "Messages in one Instagram conversation, most recent first. 'from' is 'me' (the account owner) or 'them'. message_id values work with instagram_react.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "account_id of a Instagram account from inbox_list_accounts (a listed chat's account_id). Needed only when several Instagram accounts are connected.",
+            "type": "string"
+          },
+          "chat_id": {
+            "type": "string"
+          },
+          "limit": {
+            "default": 30,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "cursor": {
+            "type": "string"
+          },
+          "fresh": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "chat_id"
+        ]
+      },
+      "annotations": {
+        "title": "Read an Instagram conversation",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "group": "Instagram",
+      "permission": "linkedin:messages",
+      "limit": "read",
+      "readOnly": true
+    },
+    {
+      "name": "instagram_send_message",
+      "title": "Send an Instagram message",
+      "description": "Reply in an existing Instagram direct conversation. Plain text. Show the user the exact text before calling this.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "account_id of a Instagram account from inbox_list_accounts (a listed chat's account_id). Needed only when several Instagram accounts are connected.",
+            "type": "string"
+          },
+          "chat_id": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 8000
+          }
+        },
+        "required": [
+          "chat_id",
+          "text"
+        ]
+      },
+      "annotations": {
+        "title": "Send an Instagram message",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "group": "Instagram",
+      "permission": "linkedin:send",
+      "limit": "message",
+      "readOnly": false
+    },
+    {
+      "name": "instagram_start_chat",
+      "title": "Start a new Instagram conversation",
+      "description": "Send a direct message to an Instagram user you have no conversation with yet, by user id (a chat's person_id, or from instagram_get_profile). Messages to people who don't follow the account land in their message requests, and Instagram restricts accounts that message many strangers: only message people who expect it; at most 10 new conversations a day. Show the user the exact text before calling this.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "account_id of a Instagram account from inbox_list_accounts (a listed chat's account_id). Needed only when several Instagram accounts are connected.",
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Instagram user id of the recipient"
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 8000
+          }
+        },
+        "required": [
+          "user_id",
+          "text"
+        ]
+      },
+      "annotations": {
+        "title": "Start a new Instagram conversation",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "group": "Instagram",
+      "permission": "linkedin:send",
+      "limit": "start_chat",
+      "readOnly": false
+    },
+    {
+      "name": "instagram_mark_read",
+      "title": "Mark Instagram conversation as read",
+      "description": "Marks an Instagram conversation read (or unread).",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "account_id of a Instagram account from inbox_list_accounts (a listed chat's account_id). Needed only when several Instagram accounts are connected.",
+            "type": "string"
+          },
+          "chat_id": {
+            "type": "string"
+          },
+          "read": {
+            "default": true,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "chat_id"
+        ]
+      },
+      "annotations": {
+        "title": "Mark Instagram conversation as read",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "group": "Instagram",
+      "permission": "linkedin:send",
+      "limit": "manage",
+      "readOnly": false
+    },
+    {
+      "name": "instagram_react",
+      "title": "React to a Instagram message",
+      "description": "Add an emoji reaction to a message (message_id from instagram_get_messages). Instagram keeps one reaction per person: a new one replaces yours.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "account_id of a Instagram account from inbox_list_accounts (a listed chat's account_id). Needed only when several Instagram accounts are connected.",
+            "type": "string"
+          },
+          "chat_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "message_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reaction": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 16,
+            "description": "One emoji, like \ud83d\udc4d"
+          }
+        },
+        "required": [
+          "chat_id",
+          "message_id",
+          "reaction"
+        ]
+      },
+      "annotations": {
+        "title": "React to a Instagram message",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "group": "Instagram",
+      "permission": "linkedin:send",
+      "limit": "manage",
+      "readOnly": false
+    },
+    {
+      "name": "instagram_get_profile",
+      "title": "Get a Instagram profile",
+      "description": "A Instagram user's profile: name, username, phone when Instagram shares it, bio, followers and picture. Counts as a profile view.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "account_id of a Instagram account from inbox_list_accounts (a listed chat's account_id). Needed only when several Instagram accounts are connected.",
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Instagram user id (a chat's person_id) or username"
+          },
+          "fresh": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "user_id"
+        ]
+      },
+      "annotations": {
+        "title": "Get a Instagram profile",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "group": "Instagram",
+      "permission": "linkedin:profiles",
+      "limit": "profile",
+      "readOnly": true
+    },
+    {
+      "name": "instagram_list_posts",
+      "title": "List Instagram posts",
+      "description": "Posts of an Instagram user, most recent first: the account's own by default, or someone else's with user_id. Returns caption, link, date, likes and comments.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "account_id of a Instagram account from inbox_list_accounts (a listed chat's account_id). Needed only when several Instagram accounts are connected.",
+            "type": "string"
+          },
+          "user_id": {
+            "description": "Instagram user id or username; default: the account's own posts",
+            "type": "string",
+            "minLength": 1
+          },
+          "limit": {
+            "default": 10,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "cursor": {
+            "description": "next_cursor from a previous call",
+            "type": "string"
+          }
+        }
+      },
+      "annotations": {
+        "title": "List Instagram posts",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "group": "Instagram",
+      "permission": "linkedin:profiles",
+      "limit": "read",
+      "readOnly": true
+    },
+    {
+      "name": "instagram_create_post",
+      "title": "Publish an Instagram post",
+      "description": "Publish a photo on the account's Instagram feed: image_url is an https link to a JPEG, PNG or WebP (at most 8 MB), text is the caption. Public and irreversible from here: confirm the image and the caption with the user first.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "account": {
+            "description": "account_id of a Instagram account from inbox_list_accounts (a listed chat's account_id). Needed only when several Instagram accounts are connected.",
+            "type": "string"
+          },
+          "image_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "https link to the image"
+          },
+          "text": {
+            "default": "",
+            "description": "Caption",
+            "type": "string",
+            "maxLength": 2200
+          }
+        },
+        "required": [
+          "image_url"
+        ]
+      },
+      "annotations": {
+        "title": "Publish an Instagram post",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "group": "Instagram",
+      "permission": "linkedin:send",
+      "limit": "post",
+      "readOnly": false
+    },
+    {
+      "name": "search",
+      "title": "Search LinkedIn people",
+      "description": "Search LinkedIn people by keywords. Returns ids usable with fetch.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "annotations": {
+        "title": "Search LinkedIn people",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "outputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "title",
+                "url"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "results"
+        ],
+        "additionalProperties": false
+      },
+      "group": "ChatGPT deep research",
+      "permission": "linkedin:search",
+      "limit": "search",
+      "readOnly": true
+    },
+    {
+      "name": "fetch",
+      "title": "Fetch a LinkedIn record",
+      "description": "Fetch a full record by id from search: person:<id> or chat:<id>.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "annotations": {
+        "title": "Fetch a LinkedIn record",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "outputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "metadata": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {}
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "text",
+          "url"
+        ],
+        "additionalProperties": false
+      },
+      "group": "ChatGPT deep research",
+      "permission": "linkedin:profiles",
+      "limit": "profile",
+      "readOnly": true
+    }
+  ]
+}
