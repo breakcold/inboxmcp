@@ -5,14 +5,14 @@ Started 2026-10-13. Submitted or pending review does not mean approved or listed
 | Directory | Status | Evidence / next step |
 | --- | --- | --- |
 | [Official MCP Registry](https://registry.modelcontextprotocol.io) | Published | 2026-10-13: `io.github.breakcold/inboxmcp` version `1.0.0`; public API confirms active/latest. [Record](https://registry.modelcontextprotocol.io/v0.1/servers/io.github.breakcold%2Finboxmcp/versions/1.0.0), [publish run](https://github.com/breakcold/inboxmcp/actions/runs/38354455771). |
-| [Glama](https://glama.ai/mcp/servers) | Awaiting account setup | Submission requires Glama sign-in. Publisher confirmation requested for signup terms. |
-| [Smithery](https://smithery.ai) | Awaiting sign-in | Publisher is signing in; listing metadata is prepared. |
+| [Glama](https://glama.ai/mcp/servers) | Submitted for review | 2026-10-13: hosted endpoint submitted; Glama email at 06:15 UTC confirms InboxMCP is pending review. Health-check setup follows approval. |
+| [Smithery](https://smithery.ai) | Created; OAuth scan blocked | 2026-10-13: [server page](https://smithery.ai/servers/inboxmcp/inboxmcp) created and metadata saved. Deployment scan requires OAuth; InboxMCP login popup rendered blank and authorization timed out. No successful deployment yet. |
 | [MCP.so](https://mcp.so) | Submitted for review | 2026-10-13: [community submission #5222](https://github.com/chatmcp/mcpso/issues/5222). Paid web form not used. |
-| [GitHub MCP Registry](https://github.com/mcp) | Not started |  |
+| [GitHub MCP Registry](https://github.com/mcp) | Awaiting downstream indexing | Official registry publication completed. GitHub documents automatic downstream updates; curated catalog listing not yet verified. |
 | [Cursor Directory](https://cursor.directory) | Previously completed | Reported done by publisher; outside this submission pass. |
 | [Claude Connectors Directory](https://claude.ai/directory) | Previously completed | Reported done by publisher; outside this submission pass. |
 | [ChatGPT Plugin Directory](https://platform.openai.com) | Previously completed | Reported done by publisher; outside this submission pass. |
-| [PulseMCP](https://www.pulsemcp.com) | Not started |  |
+| [PulseMCP](https://www.pulsemcp.com) | Intake paused | 2026-10-13: [submission page](https://www.pulsemcp.com/submit) says all submissions/changes are paused and official-registry entries will be imported when intake resumes. Official publication completed. |
 | [MCP Market](https://mcpmarket.com) | Not started |  |
 | [MCP Servers](https://mcpservers.org) | Not started |  |
 | [LobeHub MCP](https://lobehub.com/mcp) | Not started |  |
