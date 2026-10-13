@@ -57,3 +57,15 @@ Add the endpoint as a custom remote connector, then follow the browser sign-in. 
 - Public runtime documentation: `https://inbox-mcp.com/api/docs`
 
 An unauthenticated MCP request returns an OAuth challenge. After authorization, call `inbox_list_accounts` to verify access without sending any messages. Provider-specific tools appear for connected provider accounts; refresh discovery after adding an account.
+
+## Gemini CLI
+
+Install the extension from this public metadata repository:
+
+```sh
+gemini extensions install https://github.com/breakcold/inboxmcp
+```
+
+Start Gemini CLI and use `/mcp auth inboxmcp` to sign in through InboxMCP OAuth. A connected supported messaging account is required. The manifest uses Streamable HTTP and keeps tool confirmations enabled.
+
+The hosted service requires an InboxMCP account and offers a free trial followed by a paid subscription. See https://inbox-mcp.com/docs.

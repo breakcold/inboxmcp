@@ -1,0 +1,11 @@
+{
+  "name": "inboxmcp",
+  "version": "1.0.0",
+  "description": "Connect LinkedIn, WhatsApp, Telegram and Instagram inboxes through InboxMCP.",
+  "mcpServers": {
+    "inboxmcp": {
+      "httpUrl": "https://inbox-mcp.com/mcp",
+      "trust": false
+    }
+  }
+}

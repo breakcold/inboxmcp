@@ -15,12 +15,12 @@ Started 2026-10-13. Submitted or pending review does not mean approved or listed
 | [PulseMCP](https://www.pulsemcp.com) | Intake paused | 2026-10-13: [submission page](https://www.pulsemcp.com/submit) says all submissions/changes are paused and official-registry entries will be imported when intake resumes. Official publication completed. |
 | [MCP Market](https://mcpmarket.com) | Submitted for review | 2026-10-13: public repository submitted through free queue; success screen confirmed estimated 4–6 week wait. |
 | [MCP Servers](https://mcpservers.org) | Submitted for review | 2026-10-13: success page confirms InboxMCP submitted under Communication, remote/OAuth, official registry name included. Free review within 2 weeks. |
-| [LobeHub MCP](https://lobehub.com/mcp) | Manifest ready; awaiting login | `lhm.plugin.json` includes the hosted endpoint and all 50 tools. Publisher CLI requires LobeHub login and GitHub ownership authorization. |
-| [AIBase MCP](https://www.aibase.com) | Not started |  |
-| [MCP Directory](https://mcp.directory/submit) | Not started |  |
-| [Cline Marketplace](https://github.com/cline) | Not started |  |
-| [Docker MCP Catalog](https://hub.docker.com/mcp) | Not started |  |
-| [Gemini CLI Extensions](https://geminicli.com/extensions) | Not started |  |
+| [LobeHub MCP](https://lobehub.com/mcp) | Manifest ready; permission blocker | LobeHub login completed, but GitHub connection requests read/write public and private repositories, workflows and gists. Publisher declined that scope; authorization cancelled and CLI confirms GitHub not connected. Web Publish leads to same CLI route. `lhm.plugin.json` is ready with all 50 tools. |
+| [AIBase MCP](https://www.aibase.com) | Submitted for review | 2026-10-13: server name, repository, logo and Streamable HTTP configuration submitted. Success dialog confirms receipt; status available in My Submitted MCP. |
+| [MCP Directory](https://mcp.directory/submit) | Submitted for review | 2026-10-13: no matching existing entry found. Success page confirms submission for review, with expected processing within 24 hours. |
+| [Cline Marketplace](https://github.com/cline/mcp-marketplace) | Pending client validation | Required submission checkbox attests Cline successfully set up the server using README/llms-install.md. That client-specific installation test has not been completed; no false attestation submitted. |
+| [Docker MCP Catalog](https://hub.docker.com/mcp) | PR submitted | 2026-10-13: [docker/mcp-registry#5652](https://github.com/docker/mcp-registry/pull/5652). Remote validator, build command and catalog generation passed. Docker OAuth round trip and any private reviewer credential submission remain pending. |
+| [Gemini CLI Extensions](https://geminicli.com/extensions) | Published manifest; awaiting indexing | Root `gemini-extension.json` declares Streamable HTTP with confirmations enabled. Repository tagged `gemini-cli-extension`; gallery crawls daily and lists entries that pass validation. |
 | [Kilo Marketplace](https://kilo.ai) | Not started |  |
 | [ToolHive Registry](https://toolhive.dev) | Not started |  |
 | [ToolSDK MCP Registry](https://toolsdk.ai) | Not started |  |
